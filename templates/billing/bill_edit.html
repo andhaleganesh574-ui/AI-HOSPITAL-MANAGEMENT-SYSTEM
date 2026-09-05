@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Bill</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between mb-4">
+
+        <h2>💳 Edit Bill</h2>
+
+        <a href="{% url 'billing' %}"
+           class="btn btn-dark">
+            Back to Billing
+        </a>
+
+    </div>
+
+
+    <div class="card shadow">
+
+        <div class="card-header">
+            <h5>Edit Invoice: {{ bill.invoice_number }}</h5>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST"
+                  action="{% url 'bill_update' bill.id %}">
+
+                {% csrf_token %}
+
+                <div class="row">
+
+                    <!-- Patient -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Patient
+                        </label>
+
+                        <select name="patient"
+                                class="form-select"
+                                required>
+
+                            {% for patient in patients %}
+
+                            <option value="{{ patient.id }}"
+                                {% if patient.id == bill.patient.id %}
+                                    selected
+                                {% endif %}>
+
+                                {{ patient.name }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Invoice -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Invoice Number
+                        </label>
+
+                        <input
+                            type="text"
+                            name="invoice_number"
+                            class="form-control"
+                            value="{{ bill.invoice_number }}"
+                            required>
+
+                    </div>
+
+
+                    <!-- Consultation -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Consultation Fee
+                        </label>
+
+                        <input
+                            type="number"
+                            name="consultation_fee"
+                            class="form-control"
+                            step="0.01"
+                            value="{{ bill.consultation_fee }}">
+
+                    </div>
+
+
+                    <!-- Medicine -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Medicine Charges
+                        </label>
+
+                        <input
+                            type="number"
+                            name="medicine_charges"
+                            class="form-control"
+                            step="0.01"
+                            value="{{ bill.medicine_charges }}">
+
+                    </div>
+
+
+                    <!-- Laboratory -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Laboratory Charges
+                        </label>
+
+                        <input
+                            type="number"
+                            name="laboratory_charges"
+                            class="form-control"
+                            step="0.01"
+                            value="{{ bill.laboratory_charges }}">
+
+                    </div>
+
+
+                    <!-- Room -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Room Charges
+                        </label>
+
+                        <input
+                            type="number"
+                            name="room_charges"
+                            class="form-control"
+                            step="0.01"
+                            value="{{ bill.room_charges }}">
+
+                    </div>
+
+
+                    <!-- Other -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Other Charges
+                        </label>
+
+                        <input
+                            type="number"
+                            name="other_charges"
+                            class="form-control"
+                            step="0.01"
+                            value="{{ bill.other_charges }}">
+
+                    </div>
+
+
+                    <!-- Discount -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Discount
+                        </label>
+
+                        <input
+                            type="number"
+                            name="discount"
+                            class="form-control"
+                            step="0.01"
+                            value="{{ bill.discount }}">
+
+                    </div>
+
+
+                    <!-- Tax -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Tax
+                        </label>
+
+                        <input
+                            type="number"
+                            name="tax"
+                            class="form-control"
+                            step="0.01"
+                            value="{{ bill.tax }}">
+
+                    </div>
+
+
+                    <!-- Paid -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Paid Amount
+                        </label>
+
+                        <input
+                            type="number"
+                            name="paid_amount"
+                            class="form-control"
+                            step="0.01"
+                            value="{{ bill.paid_amount }}">
+
+                    </div>
+
+
+                    <!-- Payment Method -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Payment Method
+                        </label>
+
+                        <select
+                            name="payment_method"
+                            class="form-select">
+
+                            <option value="Cash"
+                                {% if bill.payment_method == "Cash" %}
+                                selected
+                                {% endif %}>
+                                Cash
+                            </option>
+
+                            <option value="UPI"
+                                {% if bill.payment_method == "UPI" %}
+                                selected
+                                {% endif %}>
+                                UPI
+                            </option>
+
+                            <option value="Card"
+                                {% if bill.payment_method == "Card" %}
+                                selected
+                                {% endif %}>
+                                Card
+                            </option>
+
+                            <option value="Bank Transfer"
+                                {% if bill.payment_method == "Bank Transfer" %}
+                                selected
+                                {% endif %}>
+                                Bank Transfer
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Notes -->
+
+                    <div class="col-md-8 mb-3">
+
+                        <label class="form-label">
+                            Notes
+                        </label>
+
+                        <textarea
+                            name="notes"
+                            class="form-control"
+                            rows="2">{{ bill.notes }}</textarea>
+
+                    </div>
+
+                </div>
+
+
+                <div class="mt-3">
+
+                    <button
+                        type="submit"
+                        class="btn btn-success">
+
+                        Update Bill
+
+                    </button>
+
+                    <a
+                        href="{% url 'billing' %}"
+                        class="btn btn-secondary">
+
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

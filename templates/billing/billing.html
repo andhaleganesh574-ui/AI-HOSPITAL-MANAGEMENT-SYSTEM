@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Hospital Billing</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+
+<div class="container-fluid mt-4 px-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2>💳 Hospital Billing</h2>
+
+            <p class="text-muted">
+                Patient Billing & Payment Management
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'dashboard' %}"
+            class="btn btn-dark">
+
+            Dashboard
+
+        </a>
+
+    </div>
+
+
+    <!-- CREATE BILL -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header">
+
+            <h5 class="mb-0">
+                Create New Bill
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <form
+                method="POST"
+                action="{% url 'bill_save' %}">
+
+                {% csrf_token %}
+
+                <div class="row">
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Patient
+                        </label>
+
+                        <select
+                            name="patient"
+                            class="form-select"
+                            required>
+
+                            <option value="">
+                                Select Patient
+                            </option>
+
+                            {% for patient in patients %}
+
+                            <option value="{{ patient.id }}">
+
+                                {{ patient.name }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Invoice Number
+                        </label>
+
+                        <input
+                            type="text"
+                            name="invoice_number"
+                            class="form-control"
+                            placeholder="INV-2026-001"
+                            required>
+
+                    </div>
+
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Consultation Fee
+                        </label>
+
+                        <input
+                            type="number"
+                            name="consultation_fee"
+                            class="form-control"
+                            step="0.01"
+                            value="0">
+
+                    </div>
+
+
+                    <div class="col-md-3 mb-3">
+
+                        <label class="form-label">
+                            Medicine Charges
+                        </label>
+
+                        <input
+                            type="number"
+                            name="medicine_charges"
+                            class="form-control"
+                            step="0.01"
+                            value="0">
+
+                    </div>
+
+
+                    <div class="col-md-3 mb-3">
+
+                        <label class="form-label">
+                            Laboratory Charges
+                        </label>
+
+                        <input
+                            type="number"
+                            name="laboratory_charges"
+                            class="form-control"
+                            step="0.01"
+                            value="0">
+
+                    </div>
+
+
+                    <div class="col-md-3 mb-3">
+
+                        <label class="form-label">
+                            Room Charges
+                        </label>
+
+                        <input
+                            type="number"
+                            name="room_charges"
+                            class="form-control"
+                            step="0.01"
+                            value="0">
+
+                    </div>
+
+
+                    <div class="col-md-3 mb-3">
+
+                        <label class="form-label">
+                            Other Charges
+                        </label>
+
+                        <input
+                            type="number"
+                            name="other_charges"
+                            class="form-control"
+                            step="0.01"
+                            value="0">
+
+                    </div>
+
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Discount
+                        </label>
+
+                        <input
+                            type="number"
+                            name="discount"
+                            class="form-control"
+                            step="0.01"
+                            value="0">
+
+                    </div>
+
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Tax
+                        </label>
+
+                        <input
+                            type="number"
+                            name="tax"
+                            class="form-control"
+                            step="0.01"
+                            value="0">
+
+                    </div>
+
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Paid Amount
+                        </label>
+
+                        <input
+                            type="number"
+                            name="paid_amount"
+                            class="form-control"
+                            step="0.01"
+                            value="0">
+
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+
+    <label class="form-label">
+        Total Amount
+    </label>
+
+    <input
+        type="number"
+        id="total_amount"
+        class="form-control"
+        value="0"
+        readonly>
+
+</div>
+
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Payment Method
+                        </label>
+
+                        <select
+                            name="payment_method"
+                            class="form-select">
+
+                            <option value="Cash">
+                                Cash
+                            </option>
+
+                            <option value="UPI">
+                                UPI
+                            </option>
+
+                            <option value="Card">
+                                Card
+                            </option>
+
+                            <option value="Bank Transfer">
+                                Bank Transfer
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Notes
+                        </label>
+
+                        <input
+                            type="text"
+                            name="notes"
+                            class="form-control"
+                            placeholder="Additional notes">
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary">
+
+                    Generate Bill
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- BILL LIST -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-header">
+
+            <h5 class="mb-0">
+                Billing Records
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>Invoice</th>
+                            <th>Patient</th>
+                            <th>Total</th>
+                            <th>Paid</th>
+                            <th>Balance</th>
+                            <th>Method</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for bill in data %}
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    {{ bill.invoice_number }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ bill.patient.name }}
+                            </td>
+
+                            <td>
+                                ₹{{ bill.total_amount }}
+                            </td>
+
+                            <td>
+                                ₹{{ bill.paid_amount }}
+                            </td>
+
+                            <td>
+                                ₹{{ bill.total_amount|add:"-"|add:bill.paid_amount }}
+                            </td>
+
+                            <td>
+                                {{ bill.payment_method }}
+                            </td>
+
+                            <td>
+
+                                {% if bill.payment_status == "Paid" %}
+
+                                <span class="badge bg-success">
+                                    Paid
+                                </span>
+
+                                {% elif bill.payment_status == "Partial" %}
+
+                                <span class="badge bg-warning text-dark">
+                                    Partial
+                                </span>
+
+                                {% else %}
+
+                                <span class="badge bg-danger">
+                                    Pending
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+                                {{ bill.bill_date }}
+                            </td>
+
+                            <td>
+
+                                <a
+                                    href="{% url 'bill_edit' bill.id %}"
+                                    class="btn btn-warning btn-sm">
+
+                                    Edit
+
+                                </a>
+
+                                <a
+                                    href="{% url 'bill_delete' bill.id %}"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Delete this bill?');">
+
+                                    Delete
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td
+                                colspan="9"
+                                class="text-center py-4">
+
+                                No billing records found.
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function calculateTotal() {
+
+    let consultation =
+        parseFloat(document.querySelector('[name="consultation_fee"]').value) || 0;
+
+    let medicine =
+        parseFloat(document.querySelector('[name="medicine_charges"]').value) || 0;
+
+    let laboratory =
+        parseFloat(document.querySelector('[name="laboratory_charges"]').value) || 0;
+
+    let room =
+        parseFloat(document.querySelector('[name="room_charges"]').value) || 0;
+
+    let other =
+        parseFloat(document.querySelector('[name="other_charges"]').value) || 0;
+
+    let discount =
+        parseFloat(document.querySelector('[name="discount"]').value) || 0;
+
+    let tax =
+        parseFloat(document.querySelector('[name="tax"]').value) || 0;
+
+
+    let total =
+        consultation +
+        medicine +
+        laboratory +
+        room +
+        other +
+        tax -
+        discount;
+
+
+    document.getElementById('total_amount').value =
+        total.toFixed(2);
+}
+
+
+document.querySelectorAll('input[type="number"]').forEach(function(input) {
+
+    input.addEventListener('input', calculateTotal);
+
+});
+
+</script></body>
+
+</html>

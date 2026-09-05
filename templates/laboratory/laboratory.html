@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Laboratory Management</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="container-fluid mt-4 px-4">
+
+    <!-- HEADER -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2>🧪 Laboratory Management</h2>
+
+            <p class="text-muted">
+                Diagnostic Tests & Medical Reports
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'dashboard' %}"
+            class="btn btn-dark">
+
+            Dashboard
+
+        </a>
+
+    </div>
+
+
+    <!-- ADD LAB TEST -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header">
+
+            <h5 class="mb-0">
+                Create Laboratory Test
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <form
+                method="POST"
+                action="{% url 'lab_test_save' %}">
+
+                {% csrf_token %}
+
+                <div class="row">
+
+                    <!-- PATIENT -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Patient
+                        </label>
+
+                        <select
+                            name="patient"
+                            class="form-select"
+                            required>
+
+                            <option value="">
+                                Select Patient
+                            </option>
+
+                            {% for patient in patients %}
+
+                            <option value="{{ patient.id }}">
+
+                                {{ patient.name }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- DOCTOR -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Referring Doctor
+                        </label>
+
+                        <select
+                            name="doctor"
+                            class="form-select">
+
+                            <option value="">
+                                Select Doctor
+                            </option>
+
+                            {% for doctor in doctors %}
+
+                            <option value="{{ doctor.id }}">
+
+                                Dr. {{ doctor.name }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- REPORT NUMBER -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Report Number
+                        </label>
+
+                        <input
+                            type="text"
+                            name="report_number"
+                            class="form-control"
+                            placeholder="LAB-2026-001"
+                            required>
+
+                    </div>
+
+
+                    <!-- TEST NAME -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Test Name
+                        </label>
+
+                        <input
+                            type="text"
+                            name="test_name"
+                            class="form-control"
+                            placeholder="Complete Blood Count"
+                            required>
+
+                    </div>
+
+
+                    <!-- CATEGORY -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Test Category
+                        </label>
+
+                        <select
+                            name="test_category"
+                            class="form-select"
+                            required>
+
+                            <option value="">
+                                Select Category
+                            </option>
+
+                            <option value="Hematology">
+                                Hematology
+                            </option>
+
+                            <option value="Biochemistry">
+                                Biochemistry
+                            </option>
+
+                            <option value="Pathology">
+                                Pathology
+                            </option>
+
+                            <option value="Microbiology">
+                                Microbiology
+                            </option>
+
+                            <option value="Radiology">
+                                Radiology
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- SAMPLE -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Sample Type
+                        </label>
+
+                        <select
+                            name="sample_type"
+                            class="form-select"
+                            required>
+
+                            <option value="">
+                                Select Sample
+                            </option>
+
+                            <option value="Blood">
+                                Blood
+                            </option>
+
+                            <option value="Urine">
+                                Urine
+                            </option>
+
+                            <option value="Saliva">
+                                Saliva
+                            </option>
+
+                            <option value="Swab">
+                                Swab
+                            </option>
+
+                            <option value="Tissue">
+                                Tissue
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- TEST DATE -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Test Date
+                        </label>
+
+                        <input
+                            type="date"
+                            name="test_date"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+
+                    <!-- STATUS -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Test Status
+                        </label>
+
+                        <select
+                            name="status"
+                            class="form-select"
+                            required>
+
+                            <option value="Pending">
+                                Pending
+                            </option>
+
+                            <option value="Sample Collected">
+                                Sample Collected
+                            </option>
+
+                            <option value="Completed">
+                                Completed
+                            </option>
+
+                            <option value="Cancelled">
+                                Cancelled
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- NORMAL RANGE -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Normal Range
+                        </label>
+
+                        <input
+                            type="text"
+                            name="normal_range"
+                            class="form-control"
+                            placeholder="12 - 16 g/dL">
+
+                    </div>
+
+
+                    <!-- RESULT -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Test Result
+                        </label>
+
+                        <textarea
+                            name="result"
+                            class="form-control"
+                            rows="3"
+                            placeholder="Enter test result"></textarea>
+
+                    </div>
+
+
+                    <!-- REMARKS -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Remarks
+                        </label>
+
+                        <textarea
+                            name="remarks"
+                            class="form-control"
+                            rows="3"
+                            placeholder="Doctor / Lab remarks"></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary">
+
+                    Create Lab Test
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- LAB REPORTS -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-header">
+
+            <h5 class="mb-0">
+                Laboratory Reports
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table
+                    class="table table-bordered table-hover align-middle">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>Report No.</th>
+
+                            <th>Patient</th>
+
+                            <th>Doctor</th>
+
+                            <th>Test</th>
+
+                            <th>Category</th>
+
+                            <th>Sample</th>
+
+                            <th>Date</th>
+
+                            <th>Status</th>
+
+                            <th>Result</th>
+
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for test in data %}
+
+                        <tr>
+
+                            <td>
+
+                                <strong>
+                                    {{ test.report_number }}
+                                </strong>
+
+                            </td>
+
+
+                            <td>
+
+                                {{ test.patient.name }}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if test.doctor %}
+
+                                    Dr. {{ test.doctor.name }}
+
+                                {% else %}
+
+                                    <span class="text-muted">
+                                        Not Assigned
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                {{ test.test_name }}
+
+                            </td>
+
+
+                            <td>
+
+                                {{ test.test_category }}
+
+                            </td>
+
+
+                            <td>
+
+                                {{ test.sample_type }}
+
+                            </td>
+
+
+                            <td>
+
+                                {{ test.test_date }}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if test.status == "Completed" %}
+
+                                    <span class="badge bg-success">
+                                        Completed
+                                    </span>
+
+                                {% elif test.status == "Pending" %}
+
+                                    <span class="badge bg-warning text-dark">
+                                        Pending
+                                    </span>
+
+                                {% elif test.status == "Cancelled" %}
+
+                                    <span class="badge bg-danger">
+                                        Cancelled
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-info">
+                                        {{ test.status }}
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if test.result %}
+
+                                    {{ test.result }}
+
+                                {% else %}
+
+                                    <span class="text-muted">
+                                        Awaiting Result
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                <a
+                                    href="{% url 'lab_test_edit' test.id %}"
+                                    class="btn btn-warning btn-sm">
+
+                                    Edit
+
+                                </a>
+
+
+                                <a
+                                    href="{% url 'lab_test_delete' test.id %}"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Delete this laboratory test?');">
+
+                                    Delete
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td
+                                colspan="10"
+                                class="text-center text-muted py-4">
+
+                                No laboratory tests available.
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+
+</html>
